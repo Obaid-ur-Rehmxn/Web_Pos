@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300&display=swap');
+*{
+    font-family: 'Poppins', sans-serif;
+}
+body{ margin:0;
+background-color: #f9f9fd;
+}
+
+nav {
+    margin:0 auto;
+    width:100%;
+    height:auto;
+    display:inline-block;
+    background:black;
+}
+
+nav ul {
+    margin:0;padding:0;
+    list-style-type:none;
+    float:left;
+    display:inline-block;
+}
+
+nav ul li {
+    position:relative;
+    margin:0 20px 0 0;
+    float:left;
+    display:inline-block;
+}
+
+li > a:after { content: ' »'; } /* Change this in order to change the Dropdown symbol */
+
+li > a:only-child:after { content: ''; }
+
+nav ul li a {
+    padding:20px;
+    display:inline-block;
+    color:white;
+    text-decoration:none;
+    font-size: 16px;
+}
+
+nav ul li a:hover {
+    opacity:0.5;
+}
+
+nav ul li ul {
+    display:none;
+    position:absolute;
+    left:0;
+    background:black;
+    float:left;
+}
+
+nav ul li ul li {
+    width:100%;
+    border-bottom:1px solid rgba(255,255,255,.3);
+}
+
+nav ul li:hover ul {
+    display:block;
+}
+.navbar{
+    float: right;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.table1{
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    right: 10%;
+    bottom: 20px;
+}
+.table2{
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+}

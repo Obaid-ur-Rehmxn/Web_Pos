@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WEB - POS</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+<div class="login-page">
+    <div class="form">
+        <form class="login-form"method="POST">
+            <input type="text" placeholder="username" name="username" id="username" class="input" required/>
+            <input type="password" placeholder="password" name="password" id="password" class="input" required/>
+            <input type="button" class="button" onclick="login(document.getElementById('username').value,document.getElementById('password').value)" value="login"/>
+        </form>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function login(user,pass){
+        localStorage.setItem("username",user);
+        let xmlhttp=new XMLHttpRequest();
+        xmlhttp.onreadystatechange=function (){
+            if (this.readyState==4 && this.status==200){
+                let myObj1=this.responseText;
+                if(myObj1 == 1){
+                        alert("login successfully");
+                        window.location.href='dashboard.php';
+                }
+                else if (user === "superadmin" && pass === "superadmin"){
+                    alert("Login successfully");
+                    window.location.href='superdashboard.php';
+                }
+                else{
+                    alert("Invalid credentials");
+                    window.location.href='index.html';
+                }
+            }
+        };
+        xmlhttp.open("GET","logincredentials.php?username="+ user +"&password="+ pass,true);
+        xmlhttp.send();
+    }
+</script>
+</body>
+</html>
