@@ -1,14 +1,14 @@
 <?php
 require_once('db.php');
 $con = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
-$result2=mysqli_query($con,"Select Auto_increment as id from information_schema.Tables where (TABLE_name='tblsubcategory')");
+$result2=mysqli_query($con,"Select Auto_increment as id from information_schema.Tables where (TABLE_name='tblpacking')");
 $count=mysqli_fetch_assoc($result2);
 $row=$count['id'];
-function checkDuplicate1($con,$name,$store,$category){
+function checkDuplicate1($con,$name,$store){
     $isDuplicate=false;
-    $check=mysqli_query($con,"Select * from tblsubcategory where store='$store' AND category_id='$category'");
+    $check=mysqli_query($con,"Select * from tblpacking where store='$store'");
     while($res=mysqli_fetch_array($check)){
-        if (strtolower(trim($name))==strtolower(trim($res['subcategory_name']))){
+        if (strtolower(trim($name))==strtolower(trim($res['packing_name']))){
             $isDuplicate=true;
             break;
         }
@@ -18,44 +18,41 @@ function checkDuplicate1($con,$name,$store,$category){
 if (isset($_POST['save'])){
     $store_name=$_POST['name'];
     $store_contact=$_POST['store'];
-    $category=$_POST['category'];
     $storea=mysqli_query($con,"Select * from tblstores where store_name='$store_contact'");
     $storeb=mysqli_fetch_assoc($storea);
     $storec=$storeb['store_id'];
-    $categorya=mysqli_query($con,"Select * from tblcategory where category_name='$category' AND store='$storec'");
-    $categoryb=mysqli_fetch_assoc($categorya);
-    $categoryc=$categoryb['category_id'];
-    if (!(checkDuplicate1($con,$store_name,$storec,$categoryc))){
-        $result3=mysqli_query($con,"Insert into tblsubcategory(subcategory_name,category_id,store) VALUES ('$store_name','$categoryc','$storec')");
+    if (!(checkDuplicate1($con,$store_name,$storec))){
+        $result3=mysqli_query($con,"Insert into tblpacking(packing_name,store) VALUES ('$store_name','$storec')");
         if ($result3){
-            echo "<script>alert('Data Added Successfully'); window.location.href='inventory_subcategory.php';</script>";
+            echo "<script>alert('Data Added Successfully'); window.location.href='packing.php';</script>";
         }
     }
     else{
-        echo "<script>alert('Duplicate subcategory detected. Kindly change the subcategory name');window.location.href='inventory_subcategory.php';</script>";
+        echo "<script>alert('Duplicate packing detected. Kindly change the packing name');window.location.href='packing.php';</script>";
     }
 }
 if (isset($_POST['update'])){
     $store_id=$_POST['id'];
     $store_name=$_POST['name'];
     $store_contact=$_POST['store'];
-    $category=$_POST['category'];
     $storea=mysqli_query($con,"Select * from tblstores where store_name='$store_contact'");
     $storeb=mysqli_fetch_assoc($storea);
     $storec=$storeb['store_id'];
-    $categorya=mysqli_query($con,"Select * from tblcategory where category_name='$category' AND store='$storec'");
-    $categoryb=mysqli_fetch_assoc($categorya);
-    $categoryc=$categoryb['category_id'];
-        $result8=mysqli_query($con,"Update tblsubcategory set subcategory_name='$store_name',store='$storec',category_id='$categoryc' where subcategory_id='$store_id'");
+    if (!(checkDuplicate1($con,$store_name,$storec))){
+        $result8=mysqli_query($con,"Update tblpacking set packing_name='$store_name',store='$storec' where packing_id='$store_id'");
         if ($result8){
-            echo "<script>alert('Data Updated Successfully'); window.location.href='inventory_subcategory.php';</script>";
+            echo "<script>alert('Data Updated Successfully'); window.location.href='packing.php';</script>";
         }
+    }
+    else{
+        echo "<script>alert('Duplicate packing detected. Kindly change the packing name');window.location.href='packing.php';</script>";
+    }
 }
 if (isset($_POST['delete'])){
     $store_id=$_POST['id'];
-    $result9=mysqli_query($con,"Delete from tblsubcategory where subcategory_id='$store_id'");
+    $result9=mysqli_query($con,"Delete from tblpacking where packing_id='$store_id'");
     if ($result9){
-        echo "<script>alert('Data Deleted Successfully'); window.location.href='inventory_subcategory.php';</script>";
+        echo "<script>alert('Data Deleted Successfully'); window.location.href='packing.php';</script>";
     }
 }
 ?>
@@ -70,29 +67,23 @@ if (isset($_POST['delete'])){
     <link rel="stylesheet" href="css/stores.css">
 </head>
 <body>
-<form action="inventory_subcategory.php" method="POST" autocomplete="off" class="form">
+<form action="packing.php" method="POST" autocomplete="off" class="form">
     <div class="sec1">
         <div class="sec11">
             <div class="col-2">
                 <div class="input-group">
-                    <label class="label">SubCategory id</label>
+                    <label class="label">Packing id</label>
                     <input class="input" type="text" name="id" id="id" readonly value="<?php echo $row;?>">
                 </div>
             </div>
             <div class="col-2">
                 <div class="input-group">
-                    <label class="label">SubCategory Name</label>
+                    <label class="label">Packing Name</label>
                     <input class="input" type="text" name="name" id="name" required>
                 </div>
             </div>
         </div>
         <div class="sec11">
-            <div class="col-2">
-                <div class="input-group">
-                    <label class="label">Category</label>
-                    <Select name="category" id="category" class="input"></Select>
-                </div>
-            </div>
             <div class="col-2">
                 <div class="input-group">
                     <label class="label">Store</label>
@@ -112,7 +103,7 @@ if (isset($_POST['delete'])){
                         <thead>
                         <tr>
                             <th style="width: 20%">ID</th>
-                            <th style="width: 80%">Category Name</th>
+                            <th style="width: 80%">Packing Name</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -125,7 +116,6 @@ if (isset($_POST['delete'])){
 <script>
     document.getElementById('store').value=localStorage.getItem("store");
     getTable(localStorage.getItem("store"));
-    getCategorySelect(localStorage.getItem("store"));
 
     function getTable(value){
         let xmlhttp=new XMLHttpRequest();
@@ -136,35 +126,7 @@ if (isset($_POST['delete'])){
 
             }
         };
-        xmlhttp.open("GET","apis/subcategory_table.php?sec2increment1="+ value +"",true);
-        xmlhttp.send();
-    }
-
-    function getCategorySelect(value){
-        let xmlhttp=new XMLHttpRequest();
-        xmlhttp.onreadystatechange=function (){
-            if (this.readyState==4 && this.status==200){
-                let myObj1=this.responseText;
-                document.getElementById("category").innerHTML=myObj1;
-
-            }
-        };
-        xmlhttp.open("GET","apis/subcategory_select.php?sec2increment1="+ value +"",true);
-        xmlhttp.send();
-    }
-
-    function getCategory(value){
-        let xmlhttp=new XMLHttpRequest();
-        xmlhttp.onreadystatechange=function (){
-            if (this.readyState==4 && this.status==200){
-                let myObj1=this.responseText;
-                let myObj2 = myObj1.replace(/^\s*[\r\n]/gm, "")
-                console.log(myObj2);
-                document.getElementById("category").value=myObj2;
-
-            }
-        };
-        xmlhttp.open("GET","apis/category.php?sec2increment1="+ value +"",true);
+        xmlhttp.open("GET","apis/packing_table.php?sec2increment1="+ value +"",true);
         xmlhttp.send();
     }
 </script>
