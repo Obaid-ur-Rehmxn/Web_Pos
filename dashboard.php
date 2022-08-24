@@ -24,6 +24,7 @@
                 <li><a href="inventory_subcategory.php" target="_blank">Sub Category</a></li>
                 <li><a href="packing.php" target="_blank">Packing</a></li>
                 <li><a href="inventory.php" target="_blank">Inventory</a></li>
+                <li><a href="inventoryprint.php" target="_blank">Product Report</a></li>
             </ul>
         </li>
         <li><a href="#">Sales</a></li>
