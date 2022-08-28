@@ -29,7 +29,13 @@
         </li>
         <li><a href="#">Sales</a></li>
         <li><a href="#">Purchase</a></li>
-        <li><a href="#">Expense</a></li>
+        <li><a href="#">Expense</a>
+            <ul>
+                <li><a href="expense_category.php" target="_blank">Category</a></li>
+                <li><a href="expense.php" target="_blank">Expense</a></li>
+                <li><a href="expense_report.php" target="_blank">Expense Report</a></li>
+            </ul>
+        </li>
     </ul>
     <div class="navbar">
         <p style="color: white;font-size: 16px">Logged in: </p>

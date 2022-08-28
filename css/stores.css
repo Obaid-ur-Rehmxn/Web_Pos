@@ -190,7 +190,7 @@ body{
     background-color: black;
     color: white;
 }
-table tbody tr{
+.table tbody tr{
     cursor: pointer;
     transition: all .25s ease-in-out;
 }
