@@ -27,6 +27,7 @@
                 <li><a href="inventoryprint.php" target="_blank">Product Report</a></li>
             </ul>
         </li>
+        <li><a href="parties.php" target="_blank">Clients</a></li>
         <li><a href="#">Sales</a></li>
         <li><a href="#">Purchase</a></li>
         <li><a href="#">Expense</a>
