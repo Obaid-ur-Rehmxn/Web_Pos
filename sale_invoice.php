@@ -22,9 +22,51 @@ if (isset($_POST['delete'])){
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sale Invoice</title>
     <link rel="stylesheet" href="css/expense.css">
+    <link rel="stylesheet" href="css/saleprint.css">
 </head>
 <body>
 <form action="sale_invoice.php" method="POST" autocomplete="off" class="form">
+    <div id="invoice-POS" class="abc1">
+
+        <div id="mid">
+            <div class="info">
+                <h2 style="text-align: center;font-size: 1em;">Contact Info</h2>
+                <p style="font-size: 0.7em" id="printid"></p>
+                <p style="font-size: 0.7em" id="printdate"></p>
+                <p style="font-size: 0.7em" id="printname"></p>
+            </div>
+        </div><!--End Invoice Mid-->
+
+        <div id="bot">
+
+            <div id="table7">
+                <table id="table8" class="table8">
+                    <thead>
+                    <tr class="tabletitle">
+                        <td style="width: 65%;padding: 5px 0 5px 15px;"><h3 style="font-size: 0.7em">Item</h3></td>
+                        <td style="width: 10%;text-align: center"><h3 style="font-size: 0.7em">Qty</h3></td>
+                        <td style="width: 20%;text-align: center"><h3 style="font-size: 0.7em">Net</h3></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tr class="tabletitle">
+                        <td></td>
+                        <td class="abc">Total</td>
+                        <td class="abc" id="total"></td>
+                    </tr>
+
+                </table>
+            </div><!--End Table-->
+
+            <div id="legalcopy">
+                <p style="text-align: center"><strong style="font-size: 0.8em">Thank you for your business!</strong>
+                </p>
+            </div>
+
+        </div><!--End InvoiceBot-->
+    </div><!--End Invoice-->
+
     <div class="searchform1" id="searchform1">
             <span onclick="document.getElementById('searchform1').style.display='none'"
                   class="close" title="Close">&times;</span>
@@ -135,7 +177,7 @@ if (isset($_POST['delete'])){
             <div class="buttons1">
                 <input type="button" name="save" id="save" class="button1" value="Save" style="background-color: #138913;border: 1px solid #138913;" onclick="insertSale()">
                 <input type="button" name="update" id="update" class="button1" value="Update" style="background-color: orange;border: 1px solid orange;" onclick="updateExpense()">
-                <input type="button" name="print" id="print" class="button1" value="Print" style="background-color: dodgerblue;border: 1px solid dodgerblue;">
+                <input type="button" name="print" id="print" class="button1" value="Print" style="background-color: dodgerblue;border: 1px solid dodgerblue;" onclick="printDiv()">
                 <input type="submit" name="delete" id="delete" class="button1" value="Delete" style="background-color: #e50a0a;border: 1px solid #e50a0a;">
             </div>
         </div>
@@ -159,7 +201,7 @@ if (isset($_POST['delete'])){
         </div>
     </div>
 </form>
-
+<script src=" https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <script>
     let jugaar;
     let today = new Date().toISOString().slice(0, 10)
@@ -542,6 +584,40 @@ if (isset($_POST['delete'])){
     async function showtablethenanother(){
         document.getElementById('table6').innerHTML=await getTable1(localStorage.getItem('store'));
         jugaar2();
+    }
+
+    function printDiv(){
+        document.getElementById("printid").innerHTML="Invoice id: "+document.getElementById("id").value+"";
+        document.getElementById("printdate").innerHTML="Date: "+document.getElementById("date").value+"";
+        document.getElementById("printname").innerHTML="Customer: "+document.getElementById("name").value+"";
+        let table4=document.getElementById("table4").getElementsByTagName("tbody")[0];
+        let table8=document.getElementById("table8").getElementsByTagName("tbody")[0];
+        table8.innerHTML="";
+        for(let i=0;i<table4.rows.length;i++) {
+            if (table4.rows[i].cells[1].innerHTML != "") {
+                let row = table8.insertRow(i);
+                row.className = "service";
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                let cell3 = row.insertCell(2);
+                cell1.className = "itemtext1";
+                cell2.className = "itemtext";
+                cell3.className = "itemtext";
+                cell1.innerHTML = table4.rows[i].cells[1].innerHTML;
+                cell2.innerHTML = table4.rows[i].cells[5].innerHTML;
+                cell3.innerHTML = table4.rows[i].cells[6].innerHTML;
+            }
+        }
+        document.getElementById("total").innerHTML=document.getElementById("amount").value;
+        printData();
+    }
+
+    function printData(){
+        printJS({
+            printable: "invoice-POS",
+            type: "html",
+            css: "css/saleprint.css",
+        });
     }
 </script>
 </body>
