@@ -34,7 +34,12 @@
                 <li><a href="sale_report.php" target="_blank">Report</a></li>
             </ul>
         </li>
-        <li><a href="#">Purchase</a></li>
+        <li><a href="#">Purchase</a>
+            <ul>
+                <li><a href="purchase_invoice.php" target="_blank">Invoice</a></li>
+                <li><a href="purchase_report.php" target="_blank">Report</a></li>
+            </ul>
+        </li>
         <li><a href="#">Expense</a>
             <ul>
                 <li><a href="expense_category.php" target="_blank">Category</a></li>
